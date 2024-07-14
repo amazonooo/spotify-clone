@@ -34,7 +34,7 @@ const SongItem: React.FC<ISongItem> = ({ data, onClick }) => {
           {data.title}
         </p>
         <p className='text-neutral-400 text-sm pb-4 w-full truncate'>
-          By {data.author}
+          {data.author}
         </p>
       </div>
       <div className='absolute bottom-24 right-5'>
