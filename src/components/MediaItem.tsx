@@ -1,6 +1,7 @@
 'use client'
 
 import useLoadImage from '@/hooks/useLoadImage';
+import usePlayer from '@/hooks/usePlayer';
 import { ISong } from '@/types';
 import Image from 'next/image';
 import { Suspense } from 'react';
@@ -12,13 +13,14 @@ interface IMediaItem {
 
 const MediaItem: React.FC<IMediaItem> = ({ data, onClick }) => {
   const imageUrl = useLoadImage(data)
+  const player = usePlayer()
 
   const handleClick = () => {
     if(onClick) {
       return onClick(data.id)
     }
 
-
+    return player.setId(data.id)
   }
 
   return (
