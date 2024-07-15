@@ -7,20 +7,28 @@ import { ISong } from '@/types';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { TbPlaylist } from 'react-icons/tb';
 import MediaItem from './MediaItem';
+import useOnPlay from '@/hooks/useOnPlay';
+import useSubscribeModal from '@/hooks/useSubscribeModal';
 
 interface ILibrary {
   songs: ISong[]
 }
 
 const Library: React.FC<ILibrary> = ({ songs }) => {
+	const subscribeModal = useSubscribeModal()
 	const authModal = useAuthModal()
 	const uploadModal = useUploadModal()
-	const { user } = useUser()
+	const { user, subscription } = useUser()
+
+	const onPlay = useOnPlay(songs)
 
 	const onClick = () => {
 		if (!user) {
 			return authModal.onOpen()
 		}
+		// if(!subscription) {
+		// 	return subscribeModal.onOpen()
+		// }
 
 		return uploadModal.onOpen()
 	}
@@ -38,9 +46,15 @@ const Library: React.FC<ILibrary> = ({ songs }) => {
 					className='text-neutral-400 cursor-pointer hover:text-white transition'
 				/>
 			</div>
-			<div className='flex flex-col gap-y-2 mt-4 px-3'>{songs.map((item) => (
-        <MediaItem key={item.id} onClick={() => {}} data={item} />
-      ))}</div>
+			<div className='flex flex-col gap-y-2 mt-4 px-3'>
+				{songs.map(item => (
+					<MediaItem
+						key={item.id}
+						onClick={(id: string) => onPlay(id)}
+						data={item}
+					/>
+				))}
+			</div>
 		</div>
 	)
 }
